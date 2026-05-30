@@ -22,4 +22,10 @@ urlpatterns = [
     path('canciones/nuevo/', views.CancionCreateView.as_view(), name='cancion_create'),
     path('canciones/<int:pk>/editar/', views.CancionUpdateView.as_view(), name='cancion_update'),
     path('canciones/<int:pk>/eliminar/', views.CancionDeleteView.as_view(), name='cancion_delete'),
+
+# Géneros
+    path('generos/', views.GeneroListView.as_view(), name='genero_list'),
+    path('generos/nuevo/', views.GeneroCreateView.as_view(), name='genero_create'),
+    path('generos/<int:pk>/editar/', views.GeneroUpdateView.as_view(), name='genero_update'),
+    path('generos/<int:pk>/eliminar/', views.GeneroDeleteView.as_view(), name='genero_delete'),
 ]

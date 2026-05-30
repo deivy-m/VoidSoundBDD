@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Artista, Album, Cancion
-from .forms import ArtistaForm, AlbumForm, CancionForm
+from .models import Artista, Album, Cancion, Genero
+from .forms import ArtistaForm, AlbumForm, CancionForm, GeneroForm
 
 
 # === CRUD ARTISTAS ===
@@ -85,6 +85,20 @@ class CancionDeleteView(DeleteView):
     success_url = reverse_lazy('cancion_list')
 
 
-from django.shortcuts import render
+class GeneroListView(ListView):
+    model = Genero
+    context_object_name = 'generos'
 
-# Create your views here.
+class GeneroCreateView(CreateView):
+    model = Genero
+    form_class = GeneroForm
+    success_url = reverse_lazy('genero_list')
+
+class GeneroUpdateView(UpdateView):
+    model = Genero
+    form_class = GeneroForm
+    success_url = reverse_lazy('genero_list')
+
+class GeneroDeleteView(DeleteView):
+    model = Genero
+    success_url = reverse_lazy('genero_list')

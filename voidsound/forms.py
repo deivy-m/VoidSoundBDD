@@ -1,5 +1,5 @@
 from django import forms
-from .models import Artista, Album, Cancion
+from .models import Artista, Album, Cancion, Genero
 
 class ArtistaForm(forms.ModelForm):
     class Meta:
@@ -33,4 +33,15 @@ class CancionForm(forms.ModelForm):
             'estado': forms.Select(attrs={'class': 'form-control'}),
             'album': forms.Select(attrs={'class': 'form-control'}),
             'genero': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+
+class GeneroForm(forms.ModelForm):
+    class Meta:
+        model = Genero
+        fields = ['id_genero', 'nombreGenero']
+        widgets = {
+            'id_genero': forms.NumberInput(attrs={'class': 'form-control'}),
+            'nombreGenero': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej. Rock, Pop, Reggaeton'}),
         }
