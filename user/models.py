@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-# Ajusta el nombre de la app de música si es necesario
 from voidsound.models import Cancion
 
 
@@ -25,7 +24,7 @@ class UsuarioManager(BaseUserManager):
         return user
 
 
-# --- Tabla: Usuarios.Usuario ---
+
 class Usuario(AbstractBaseUser):
     TIPO_USUARIO_CHOICES = [
         ('free', 'Free'),
@@ -46,7 +45,7 @@ class Usuario(AbstractBaseUser):
     REQUIRED_FIELDS = ['id_usuario', 'nombre']
 
     class Meta:
-        # Ponemos el nombre del esquema separado por un punto
+
         db_table = '"Usuarios"."Usuario"'
 
     def __str__(self):
@@ -57,7 +56,7 @@ class Usuario(AbstractBaseUser):
         return self.is_admin
 
 
-# --- Tabla: Usuarios.Playlist ---
+
 class Playlist(models.Model):
     id_playlist = models.IntegerField(primary_key=True)
     nombrePlaylist = models.CharField(max_length=100)
@@ -71,7 +70,7 @@ class Playlist(models.Model):
         return self.nombrePlaylist
 
 
-# --- Tabla Intermedia: Usuarios.CancionPlaylist ---
+
 class CancionPlaylist(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, db_column='Playlist_id_playlist')
     cancion = models.ForeignKey(Cancion, on_delete=models.CASCADE, db_column='Cancion_id_cancion')
@@ -81,7 +80,6 @@ class CancionPlaylist(models.Model):
         unique_together = (('playlist', 'cancion'),)
 
 
-# --- Tabla Intermedia: Usuarios.Likes ---
 class Likes(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='Usuario_id_usuario')
     cancion = models.ForeignKey(Cancion, on_delete=models.CASCADE, db_column='Cancion_id_cancion')
@@ -91,7 +89,7 @@ class Likes(models.Model):
         unique_together = (('usuario', 'cancion'),)
 
 
-# --- Tabla: Usuarios.Reproduccion ---
+
 class Reproduccion(models.Model):
     id_reproduccion = models.IntegerField(primary_key=True)
     fecha = models.DateTimeField()

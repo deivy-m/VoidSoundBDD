@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--Cambiar eventualmente los estilos en htmls-->
 <html lang="es">
 <head>
     <title>Registro de Usuario - VoidSound</title>
@@ -7,7 +8,9 @@
     <h2>Crear Cuenta en VoidSound</h2>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        <table>
+            {{ form.as_table }}
+        </table>
         <button type="submit">Registrar</button>
     </form>
     <br>
