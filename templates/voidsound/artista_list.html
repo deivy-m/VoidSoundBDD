@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>VoidSound - Catálogo de Artistas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Catálogo de Artistas - VoidSound</h1>
+        <div>
+            <a href="{% url 'album_list' %}" class="btn btn-outline-secondary">Ver Álbumes</a>
+            <a href="{% url 'cancion_list' %}" class="btn btn-outline-secondary">Ver Canciones</a>
+            <a href="{% url 'artista_create' %}" class="btn btn-primary">+ Agregar Artista</a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>País</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for artista in artistas %}
+            <tr>
+                <td>{{ artista.id_artista }}</td>
+                <td>{{ artista.nombreArtista }}</td>
+                <td>{{ artista.paisArtista }}</td>
+                <td>
+                    <a href="{% url 'artista_detail' artista.pk %}" class="btn btn-sm btn-info text-white">Ver</a>
+                    <a href="{% url 'artista_update' artista.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'artista_delete' artista.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No hay artistas registrados de momento.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

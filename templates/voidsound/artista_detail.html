@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>VoidSound - Perfil de Artista</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h1>Detalles del Artista</h1>
+    <hr>
+    <div class="card shadow-sm" style="width: 24rem;">
+        <div class="card-body">
+            <h5 class="card-title text-primary">{{ object.nombreArtista }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">ID de Registro: {{ object.id_artista }}</h6>
+            <p class="card-text"><strong>País de Origen:</strong> {{ object.paisArtista }}</p>
+            
+            <div class="mt-4">
+                <a href="{% url 'artista_update' object.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'artista_list' %}" class="btn btn-secondary btn-sm">Regresar</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
