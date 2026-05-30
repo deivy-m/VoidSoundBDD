@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Playlists - VoidSound</title>
+</head>
+<body>
+    <h2>Mis Playlists</h2>
+    <ul>
+        {% for playlist in playlists %}
+            <li><strong>{{ playlist.nombrePlaylist }}</strong> (Creado por: {{ playlist.usuario.nombre }})</li>
+        {% empty %}
+            <li>No hay playlists creadas aún.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h3>Crear Nueva Playlist</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Playlist</button>
+    </form>
+</body>
+</html>
