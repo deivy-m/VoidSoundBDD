@@ -6,11 +6,13 @@ from .models import Usuario, Playlist
 #solo nombre, email y password
 #personalizar los campos más para pasar a los templates
 class RegistroUsuarioForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
+    contraseña = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        label="Contraseña")
 
     class Meta:
         model = Usuario
-        fields = ['id_usuario', 'nombre', 'email', 'contraseña', 'tipo_usuario']
+        fields = ['nombre', 'email', 'contraseña']
 
 
 class LoginForm(forms.Form):
@@ -33,9 +35,24 @@ class LoginForm(forms.Form):
 
 
 
-
-#no id, solo nombre al crear playlist
 class PlaylistForm(forms.ModelForm):
+
+    nombrePlaylist = forms.CharField(help_text=False, label=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Nombre de la playlist'}))
+
     class Meta:
         model = Playlist
-        fields = ['id_playlist', 'nombrePlaylist']
+        fields = ['nombrePlaylist', ]
+
+class EditUserForm(forms.ModelForm):
+
+    nombre = forms.CharField(help_text=False, label=False, widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'Nombre'}))
+
+    email = forms.EmailField(help_text=False, label=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Email'}
+    ))
+
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'email']

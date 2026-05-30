@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuario - VoidSound</title>
+</head>
+<body>
+    <h1>Perfil de Usuario</h1>
+
+    <div>
+        <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Correo Electrónico:</strong> {{ usuario.email }}</p>
+        <p><strong>Tipo de Cuenta:</strong> {{ usuario.tipo_usuario|capfirst }}</p>
+    </div>
+
+    <hr>
+
+    <h3>Mis Playlists</h3>
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                <strong>ID:</strong> {{ playlist.id_playlist }} |
+                <strong>Nombre:</strong> {{ playlist.nombrePlaylist }}
+            </li>
+        {% empty %}
+            <li>Aún no has creado ninguna playlist.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'lista_playlists' %}">Volver a Playlists</a> |
+        <a href="{% url 'edit_profile' %}">Editar Perfil</a>
+    </p>
+</body>
+</html>
