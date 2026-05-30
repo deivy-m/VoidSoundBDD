@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!--Cambiar eventualmente los estilos en htmls-->
+<html lang="es">
+<head>
+    <title>Registro de Usuario - VoidSound</title>
+</head>
+<body>
+    <h2>Crear Cuenta en VoidSound</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button type="submit">Registrar</button>
+    </form>
+    <br>
+    <a href="{% url 'lista_playlists' %}">Ver Playlists</a>
+</body>
+</html>
