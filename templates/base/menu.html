@@ -1,0 +1,49 @@
+{% load static %}
+<header class="header">
+    <div class="menu">
+
+        <div class="logo">
+            <a href="{% if request.session.usuario_id %}{% url 'index' %}{% else %}{% url 'login_usuario' %}{% endif %}">
+                Void<span>Sound</span>
+            </a>
+        </div>
+
+        <nav class="nav">
+            <ul class="nav-tabs" style="display: flex; list-style: none; gap: 24px; align-items: center; margin: 0; padding: 0;">
+                {% if request.session.usuario_id %}
+                    {% if usuario_logueado and usuario_logueado.tipo_usuario == 'admin' or usuario and usuario.tipo_usuario == 'admin' %}
+                        <li class="nav-section-title" style="color: #ffc107; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">Mantenimiento</li>
+                        <li><a href="{% url 'artista_list' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Artistas</a></li>
+                        <li><a href="{% url 'album_list' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Álbumes</a></li>
+                        <li><a href="{% url 'cancion_list' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Canciones</a></li>
+                        <li><a href="{% url 'genero_list' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Géneros</a></li>
+                    {% else %}
+                        <li><a href="{% url 'index' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Inicio</a></li>
+                        <li><a href="{% url 'lista_playlists' %}" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Mis Playlists</a></li>
+                        <li><a href="#" style="color: var(--text-white); text-decoration: none; font-weight: 500;">Mis Likes</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </nav>
+
+        <div class="user-menu-right" style="display: flex; align-items: center; gap: 15px;">
+            {% if request.session.usuario_id %}
+                <a href="{% url 'profile' %}" class="btn-edit-profile" style="color: #fff; text-decoration: none; background: #252525; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                    👤 {% if usuario_logueado %}{{ usuario_logueado.nombre }}{% elif usuario %}{{ usuario.nombre }}{% else %}Usuario{% endif %}
+                </a>
+
+                <form action="{% url 'login_usuario' %}" method="post" style="display: inline; margin: 0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="logout" value="true">
+                    <button type="submit" style="background: none; border: none; color: #f15a5a; font-weight: bold; cursor: pointer; font-size: 0.85rem;">Salir</button>
+                </form>
+            {% else %}
+                {% if request.resolver_match.url_name != 'login_usuario' and request.resolver_match.url_name != 'registrar_usuario' %}
+                    <a href="{% url 'login_usuario' %}" style="color: var(--text-white); text-decoration: none; font-size: 0.85rem; font-weight: 500;">Iniciar Sesión</a>
+                    <a href="{% url 'registrar_usuario' %}" style="color: #fff; text-decoration: none; background: #007bff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;">Registrarse</a>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+</header>

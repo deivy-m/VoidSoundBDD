@@ -1,32 +1,32 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Perfil - VoidSound</title>
-</head>
-<body>
-    <h1>Editar Datos de Perfil</h1>
+{% extends 'base/base.html' %}
 
-    <form method="POST">
+{% block title %}VoidSound - Editar Perfil{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Editar Datos de Perfil</h1>
+</div>
+
+<div class="card-spotify" style="max-width: 600px; margin: 0 auto;">
+    {% if form.non_field_errors %}
+        <div class="error-box">
+            {% for error in form.non_field_errors %}
+                <p>⚠️ {{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
         {% csrf_token %}
 
-        {% if form.non_field_errors %}
-            <div style="color: red;">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {{ form.as_p }}
+        </div>
 
-        {{ form.as_p }}
-
-        <button type="submit">Guardar Cambios</button>
+        <div style="margin-top: 15px; display: flex; gap: 15px;">
+            <button type="submit" class="btn-spotify-primary">Guardar Cambios</button>
+            <a href="{% url 'profile' %}" class="btn-spotify-secondary">Cancelar y Volver</a>
+        </div>
     </form>
-
-    <br>
-    <hr>
-    <p>
-        <a href="{% url 'profile' %}">Cancelar y Volver al Perfil</a>
-    </p>
-</body>
-</html>
+</div>
+{% endblock content %}

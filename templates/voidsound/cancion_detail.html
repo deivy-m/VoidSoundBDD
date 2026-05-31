@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>VoidSound - Análisis de Track</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
-    <h1>Ficha Técnica del Track</h1>
-    <hr>
-    <div class="card shadow-sm" style="width: 26rem;">
-        <div class="card-body">
-            <h5 class="card-title text-info">{{ object.nombreCancion }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">ID Unico: {{ object.id_cancion }}</h6>
-            <hr>
-            <p class="card-text"><strong>Duración:</strong> {{ object.duracion }} segundos</p>
-            <p class="card-text"><strong>Estado actual:</strong> {{ object.estado|capfirst }}</p>
-            <p class="card-text"><strong>Pertenece al Álbum:</strong> {{ object.album.nombreAlbum }}</p>
-            <p class="card-text"><strong>Género Musical:</strong> {{ object.genero.nombreGenero }}</p>
-            
-            <div class="mt-4">
-                <a href="{% url 'cancion_update' object.pk %}" class="btn btn-warning btn-sm">Modificar</a>
-                <a href="{% url 'cancion_list' %}" class="btn btn-secondary btn-sm">Regresar al catálogo</a>
-            </div>
-        </div>
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound - {{ cancion.tituloCancion }}{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Detalles de la Canción</h1>
+    <a href="{% url 'cancion_list' %}" class="btn-spotify-secondary">Volver al listado</a>
+</div>
+
+<div class="card-spotify" style="display: flex; flex-direction: column; gap: 15px;">
+    <h2 style="color: var(--spotify-celeste); font-size: 1.8rem;">{{ cancion.tituloCancion }}</h2>
+    <p style="font-size: 1.1rem;"><strong>Duración:</strong> <span style="color: var(--text-gray);">{{ cancion.duracion }}</span></p>
+    <p style="font-size: 1.1rem;"><strong>Álbum:</strong> <span style="color: var(--text-gray);">{{ cancion.album.tituloAlbum }}</span></p>
+    <p style="font-size: 1.1rem;"><strong>Género Musical:</strong> <span style="color: var(--spotify-celeste);">{{ cancion.genero.nombreGenero }}</span></p>
+    
+    <div style="margin-top: 15px; display: flex; gap: 15px;">
+        <a href="{% url 'cancion_update' cancion.pk %}" class="btn-spotify-primary" style="background-color: #ffc107; color: #000;">Editar Pista</a>
     </div>
-</body>
-</html>
+</div>
+{% endblock content %}
