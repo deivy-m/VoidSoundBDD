@@ -1,53 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>VoidSound Finanzas - Historial de Pagos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>Historial de Pagos</h1>
-        <a href="{% url 'pago_create' %}" class="btn btn-success">Registrar Pago</a>
-    </div>
-    <hr>
-    <table class="table table-striped table-hover mt-3 shadow-sm">
-        <thead class="table-dark">
-            <tr>
-                <th>ID Pago</th>
-                <th>Usuario</th>
-                <th>Plan Suscripción</th>
-                <th>Monto</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pago in pagos %}
-            <tr>
-                <td>{{ pago.id_pago }}</td>
-                <td>{{ pago.suscripcion.usuario.nombre|default:"Sin Usuario" }}</td>
-                <td><span class="badge bg-secondary">{{ pago.suscripcion.tipo|upper }}</span></td>
-                <td><strong>${{ pago.monto }}</strong></td>
-                <td>{{ pago.fecha|date:"Y-m-d H:i" }}</td>
-                <td>
-                    <span class="badge {% if pago.estado == 'cancelado' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound Finanzas - Historial de Pagos{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Historial de Pagos</h1>
+    <a href="{% url 'pago_create' %}" class="btn-spotify-primary">Registrar Pago</a>
+</div>
+
+<table class="table-spotify">
+    <thead>
+        <tr>
+            <th>ID Pago</th>
+            <th>Usuario</th>
+            <th>Plan Suscripción</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pago in pagos %}
+        <tr>
+            <td>#{{ pago.id_pago }}</td>
+            <td style="font-weight: 500;">{{ pago.suscripcion.usuario.nombre|default:"Sin Usuario" }}</td>
+            <td>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; background-color: rgba(255,255,255,0.1); color: var(--text-white);">
+                    {{ pago.suscripcion.tipo|upper }}
+                </span>
+            </td>
+            <td style="color: var(--spotify-celeste); font-weight: 700;">${{ pago.monto }}</td>
+            <td style="color: var(--text-gray);">{{ pago.fecha|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if pago.estado == 'cancelado' %}
+                    <span style="font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; background-color: rgba(40, 167, 69, 0.2); color: #28a745;">
                         {{ pago.estado|capfirst }}
                     </span>
-                </td>
-                <td>
-                    <a href="{% url 'pago_detail' pago.pk %}" class="btn btn-info btn-sm text-white">Detalle</a>
-                    <a href="{% url 'pago_update' pago.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'pago_delete' pago.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" class="text-center text-muted">No se registran transacciones de pago.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+                {% else %}
+                    <span style="font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; background-color: rgba(255, 193, 7, 0.2); color: #ffc107;">
+                        {{ pago.estado|capfirst }}
+                    </span>
+                {% endif %}
+            </td>
+            <td class="action-links">
+                <a href="{% url 'pago_detail' pago.pk %}" class="view">Detalle</a>
+                <a href="{% url 'pago_update' pago.pk %}" class="edit">Editar</a>
+                <a href="{% url 'pago_delete' pago.pk %}" class="delete">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align: center; color: var(--text-gray); padding: 40px 0;">
+                No se registran transacciones de pago en el sistema financiero.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

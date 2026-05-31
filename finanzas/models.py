@@ -1,3 +1,4 @@
+from user.models import Usuario
 from django.db import models
 
 class Suscripcion(models.Model):

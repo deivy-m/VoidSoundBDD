@@ -1,29 +1,30 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Eliminar Cuenta - VoidSound</title>
-</head>
-<body>
-    <h1>Eliminar Cuenta de Usuario</h1>
+{% extends 'base/base.html' %}
 
-    <div style="border: 1px solid red; padding: 15px; background-color: #fff5f5;">
-        <p>Hola <strong>{{ object.nombre }}</strong>, estás a punto de eliminar tu cuenta de forma permanente.</p>
-        <p>Esta acción no se puede deshacer y perderás el acceso a todas tus playlists y configuraciones en VoidSound.</p>
+{% block title %}VoidSound - Eliminar Cuenta{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1 style="color: #f15a5a;">⚠️ Eliminar Cuenta de Usuario</h1>
+</div>
+
+<div class="card-spotify" style="border-left: 4px solid #f15a5a; display: flex; flex-direction: column; gap: 20px;">
+    <div class="error-box" style="margin-bottom: 0;">
+        <p style="font-size: 1.1rem; margin-bottom: 10px;">
+            Hola <strong>{{ object.nombre }}</strong>, estás a punto de eliminar tu cuenta de forma permanente.
+        </p>
+        <p>Esta acción no se puede deshacer y perderás el acceso a todas tus playlists y configuraciones dentro del ecosistema VoidSound.</p>
     </div>
 
-    <br>
-
-    <form method="POST">
+    <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
         {% csrf_token %}
-        <p>¿Estás completamente seguro de que deseas continuar?</p>
+        <p style="font-size: 1.05rem; color: var(--text-white);">¿Estás completamente seguro de que deseas continuar?</p>
 
-        <button type="submit" style="background-color: red; color: white; padding: 10px 15px; border: none; cursor: pointer;">
-            Sí, eliminar mi cuenta definitivamente
-        </button>
-
-        &nbsp;&nbsp;
-        <a href="{% url 'profile' %}">Cancelar y volver al perfil</a>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button type="submit" class="btn-spotify-primary" style="background-color: #f15a5a; color: #fff;">
+                Sí, eliminar mi cuenta definitivamente
+            </button>
+            <a href="{% url 'profile' %}" class="btn-spotify-secondary">Cancelar y volver al perfil</a>
+        </div>
     </form>
-</body>
-</html>
+</div>
+{% endblock content %}

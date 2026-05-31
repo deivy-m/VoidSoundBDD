@@ -1,27 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>VoidSound Finanzas - Detalle Suscripción</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
-    <h1>Detalles de la Suscripción</h1>
-    <hr>
-    <div class="card shadow-sm" style="width: 30rem;">
-        <div class="card-body">
-            <h5 class="card-title text-success">Plan: {{ object.tipo|upper }}</h5>
-            <h6 class="card-subtitle mb-3 text-muted">ID Suscripción: {{ object.id_suscripcion }}</h6>
-            <p class="card-text"><strong>Usuario Asociado:</strong> {{ object.usuario.nombre }} ({{ object.usuario.email }})</p>
-            <p class="card-text"><strong>Estado actual:</strong> {{ object.estado }}</p>
-            <p class="card-text"><strong>Fecha de Inicio:</strong> {{ object.fecha_inicio }}</p>
-            <p class="card-text"><strong>Fecha de Vencimiento:</strong> {{ object.fecha_fin }}</p>
+{% extends 'base/base.html' %}
 
-            <div class="mt-4">
-                <a href="{% url 'suscripcion_update' object.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{% url 'suscripcion_list' %}" class="btn btn-secondary btn-sm">Regresar</a>
-            </div>
-        </div>
+{% block title %}VoidSound Finanzas - Detalle Suscripción{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Detalles de la Suscripción</h1>
+    <a href="{% url 'suscripcion_list' %}" class="btn-spotify-secondary">Regresar</a>
+</div>
+
+<div class="card-spotify" style="max-width: 500px; display: flex; flex-direction: column; gap: 15px;">
+    <h2 style="color: var(--spotify-celeste); font-size: 1.6rem; margin-bottom: 5px;">Plan: {{ object.tipo|upper }}</h2>
+    <h6 style="color: var(--text-gray); font-size: 0.9rem; margin-top: -10px;">ID Suscripción: #{{ object.id_suscripcion }}</h6>
+    
+    <p style="font-size: 1.1rem;"><strong>Usuario Asociado:</strong> <span style="color: var(--text-white);">{{ object.usuario.nombre }}</span> <span style="color: var(--text-gray); font-size: 0.95rem;">({{ object.usuario.email }})</span></p>
+    <p style="font-size: 1.1rem;"><strong>Estado Actual:</strong> 
+        <span style="color: {% if object.estado == 'activa' %}#28a745{% else %}#f15a5a{% endif %}; font-weight: bold;">
+            {{ object.estado }}
+        </span>
+    </p>
+    <p style="font-size: 1.1rem;"><strong>Fecha de Inicio:</strong> <span style="color: var(--text-gray);">{{ object.fecha_inicio }}</span></p>
+    <p style="font-size: 1.1rem;"><strong>Fecha de Vencimiento:</strong> <span style="color: var(--text-gray);">{{ object.fecha_fin }}</span></p>
+
+    <div style="margin-top: 15px; display: flex; gap: 15px;">
+        <a href="{% url 'suscripcion_update' object.pk %}" class="btn-spotify-primary" style="background-color: #ffc107; color: #000;">Editar Suscripción</a>
     </div>
-</body>
-</html>
+</div>
+{% endblock content %}

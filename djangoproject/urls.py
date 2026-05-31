@@ -17,14 +17,17 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-
+# Importamos RedirectView para manejar la redirección en la raíz
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
- 
+    # Ruta raíz que redirige automáticamente a /user/login
+    path('', RedirectView.as_view(url='user/login/', permanent=False), name='index_redirect'),
 
-    path('', include('voidsound.urls')),
+    # Tus módulos de la aplicación
+    path('voidsound/', include('voidsound.urls')),  # Nota: si necesitas conservar voidsound/ cambia el string aquí
     path('finanzas/', include('finanzas.urls')),
     path('user/', include('user.urls')),
 ]

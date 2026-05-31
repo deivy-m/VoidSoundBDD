@@ -1,46 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle de Playlist - {{ playlist.nombrePlaylist }}</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
 
-    <h1>Playlist: {{ playlist.nombrePlaylist }}</h1>
-    <p>Creada por el usuario ID: {{ playlist.usuario_id }}</p>
+{% block title %}VoidSound - {{ playlist.nombrePlaylist }}{% endblock title %}
 
-    <hr>
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 style="color: var(--spotify-celeste);">Playlist: {{ playlist.nombrePlaylist }}</h1>
+        <p style="color: var(--text-gray); margin-top: 5px; font-size: 0.9rem;">Creada por el usuario ID: {{ playlist.usuario_id }}</p>
+    </div>
+    <a href="{% url 'lista_playlists' %}" class="btn-spotify-secondary">Volver a mis playlists</a>
+</div>
 
-    <h3>Canciones en esta Playlist</h3>
-    <ul>
-        {% for elemento in canciones %}
-            <li>
-                <strong>{{ elemento.cancion.nombreCancion }}</strong>
-                - ID: {{ elemento.cancion.id_cancion }}
-            </li>
-        {% empty %}
-            <li>Esta playlist aún no tiene canciones agregadas.</li>
-        {% endfor %}
-    </ul>
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start;">
+    
+    <div>
+        <h3 style="font-size: 1.3rem; margin-bottom: 15px; font-weight: 700;">Canciones en esta Playlist</h3>
+        <table class="table-spotify">
+            <thead>
+                <tr>
+                    <th>ID Pista</th>
+                    <th>Nombre de la Canción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for elemento in canciones %}
+                <tr>
+                    <td style="color: var(--text-gray);">#{{ elemento.cancion.id_cancion }}</td>
+                    <td><strong>{{ elemento.cancion.nombreCancion }}</strong></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" style="text-align: center; color: var(--text-gray); padding: 30px 0;">
+                        Esta playlist aún no tiene canciones agregadas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <hr>
+    <div class="card-spotify">
+        <h3 style="font-size: 1.2rem; margin-bottom: 15px; font-weight: 700; color: var(--spotify-celeste);">Añadir Pista</h3>
+        
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            {% csrf_token %}
 
-    <h3>Agregar una canción a la Playlist</h3>
-    <form method="POST">
-        {% csrf_token %}
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
 
-        {% if form.errors %}
-            <div style="color: red;">
-                {{ form.errors }}
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                {{ form.as_p }}
             </div>
-        {% endif %}
+            
+            <button type="submit" class="btn-spotify-primary" style="margin-top: 10px; width: 100%;">Añadir Canción</button>
+        </form>
+    </div>
 
-        {{ form.as_p }}
-        <button type="submit">Añadir Canción</button>
-    </form>
-
-    <br>
-    <p><a href="{% url 'lista_playlists' %}">Volver a mis playlists</a></p>
-
-</body>
-</html>
+</div>
+{% endblock content %}
