@@ -3,6 +3,7 @@
 *.pyc
 *.pyo
 *.pyd
+user/migrations/
 
 # Entornos virtuales
 .venv/
