@@ -4,6 +4,8 @@
 *.pyo
 *.pyd
 user/migrations/
+voidsound/migrations
+finanzas/migrations
 
 # Entornos virtuales
 .venv/
