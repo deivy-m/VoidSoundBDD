@@ -25,6 +25,6 @@ urlpatterns = [
  
 
     path('', include('voidsound.urls')),
-
+    path('finanzas/', include('finanzas.urls')),
     path('user/', include('user.urls')),
 ]
