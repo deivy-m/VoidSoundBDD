@@ -1,20 +1,5 @@
 from django.db import models
 
-class Usuario(models.Model):
-    TIPO_USUARIO_CHOICES = [('free', 'Free'), ('premium', 'Premium')]
-    id_usuario = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    email = models.CharField(max_length=100)
-    contraseña = models.CharField(max_length=50)
-    tipo_usuario = models.CharField(max_length=10, choices=TIPO_USUARIO_CHOICES, default='free')
-
-    class Meta:
-        db_table = 'Usuario'  # <-- Fuerza a buscar el nombre exacto del SQL
-
-    def __str__(self):
-        return self.nombre
-
-
 class Suscripcion(models.Model):
     TIPO_SUS_CHOICES = [('duo', 'Duo'), ('familiar', 'Familiar'), ('free', 'Free'), ('premium', 'Premium')]
     ESTADO_SUS_CHOICES = [('activa', 'Activa'), ('inactiva', 'Inactiva')]
