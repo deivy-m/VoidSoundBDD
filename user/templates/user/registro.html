@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound - Crear Cuenta{% endblock title %}
+
+{% block content %}
+<div class="auth-container" style="max-width: 500px;">
+    <h2>Crear Cuenta en VoidSound</h2>
+
+    <form method="POST" style="display: flex; flex-direction: column; width: 100%;">
+        {% csrf_token %}
+
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <button type="submit" class="btn-spotify-primary" style="margin-top: 15px; width: 100%;">Registrar Cuenta</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+        <p style="color: var(--text-gray); font-size: 0.9rem; justify-content: center;">
+            ¿Ya tienes una cuenta activa? <a href="{% url 'login_usuario' %}" style="color: var(--spotify-celeste); text-decoration: none; font-weight: 700;">Inicia Sesión</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}

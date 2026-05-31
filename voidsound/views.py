@@ -102,3 +102,5 @@ class GeneroUpdateView(UpdateView):
 class GeneroDeleteView(DeleteView):
     model = Genero
     success_url = reverse_lazy('genero_list')
+
+

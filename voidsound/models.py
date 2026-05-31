@@ -9,6 +9,9 @@ class Artista(models.Model):
     def __str__(self):
         return self.nombreArtista
 
+    class Meta:
+        db_table = '[Contenido].[Artista]'
+
 
 class Genero(models.Model):
     id_genero = models.IntegerField(primary_key=True)
@@ -16,6 +19,9 @@ class Genero(models.Model):
 
     def __str__(self):
         return self.nombreGenero
+
+    class Meta:
+        db_table = '[Contenido].[Genero]'
 
 
 class Album(models.Model):
@@ -27,6 +33,9 @@ class Album(models.Model):
 
     def __str__(self):
         return self.nombreAlbum
+
+    class Meta:
+        db_table = '[Contenido].[Album]'
 
 
 class Cancion(models.Model):
@@ -43,6 +52,9 @@ class Cancion(models.Model):
 
     def __str__(self):
         return self.nombreCancion
+
+    class Meta:
+        db_table = '[Contenido].[Cancion]'
 
 
 from django.db import models

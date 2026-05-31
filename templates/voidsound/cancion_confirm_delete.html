@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>VoidSound - Quitar Track</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
-    <div class="alert alert-warning p-4 shadow-sm" role="alert">
-        <h4 class="alert-heading">🚨 ¿Retirar canción de la base de datos?</h4>
-        <p>Vas a eliminar la pista <strong>"{{ object.nombreCancion }}"</strong> del catálogo activo de VoidSound.</p>
-        <hr>
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Confirmar baja</button>
-            <a href="{% url 'cancion_list' %}" class="btn btn-secondary">Preservar canción</a>
-        </form>
-    </div>
-</body>
-</html>
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound - Eliminar Canción{% endblock title %}
+
+{% block content %}
+<div class="page-header">
+    <h1 style="color: #f15a5a;">⚠️ Confirmar Eliminación</h1>
+</div>
+
+<div class="card-spotify" style="border-left: 4px solid #f15a5a;">
+    <p style="font-size: 1.1rem; margin-bottom: 25px;">
+        ¿Estás seguro de que deseas eliminar permanentemente la canción <strong>"{{ object.tituloCancion }}"</strong> de la biblioteca de medios?
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-spotify-primary" style="background-color: #f15a5a; color: #fff;">Eliminar pista</button>
+        <a href="{% url 'cancion_list' %}" class="btn-spotify-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

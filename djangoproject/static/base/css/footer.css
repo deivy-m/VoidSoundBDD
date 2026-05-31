@@ -1,0 +1,17 @@
+.footer-spotify {
+    background-color: #000000;
+    border-top: 1px solid #282828;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer-text {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.footer-text a {
+    color: var(--accent-celeste);
+    text-decoration: none;
+}

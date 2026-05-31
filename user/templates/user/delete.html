@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Cuenta - VoidSound</title>
+</head>
+<body>
+    <h1>Eliminar Cuenta de Usuario</h1>
+
+    <div style="border: 1px solid red; padding: 15px; background-color: #fff5f5;">
+        <p>Hola <strong>{{ object.nombre }}</strong>, estás a punto de eliminar tu cuenta de forma permanente.</p>
+        <p>Esta acción no se puede deshacer y perderás el acceso a todas tus playlists y configuraciones en VoidSound.</p>
+    </div>
+
+    <br>
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>¿Estás completamente seguro de que deseas continuar?</p>
+
+        <button type="submit" style="background-color: red; color: white; padding: 10px 15px; border: none; cursor: pointer;">
+            Sí, eliminar mi cuenta definitivamente
+        </button>
+
+        &nbsp;&nbsp;
+        <a href="{% url 'profile' %}">Cancelar y volver al perfil</a>
+    </form>
+</body>
+</html>
