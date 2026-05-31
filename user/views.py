@@ -35,6 +35,16 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = reverse_lazy('index')
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST' and request.POST.get('logout') == 'true':
+            return super().dispatch(request, *args, **kwargs)
+
+
+        if 'usuario_id' in request.session:
+            return redirect('index')
+
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         usuario = form.user
         self.request.session['usuario_id'] = usuario.id_usuario
