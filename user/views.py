@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Max
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -89,9 +88,6 @@ class DeleteUserView(DeleteView):
         self.request.session.flush()
 
         return redirect(success_url)
-
-
-
 
 class ListaPlaylistsView(View):
     template_name = 'user/playlists.html'

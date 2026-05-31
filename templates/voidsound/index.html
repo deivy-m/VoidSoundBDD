@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>VoidSound - Inicio</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: white; padding: 20px; }
+        h1 { color: #1DB954; } /* Verde tipo Spotify */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #282828; }
+        th { background-color: #181818; color: #b3b3b3; }
+        tr:hover { background-color: #282828; }
+        a { color: #1DB954; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <h1>🎵 Bienvenido a VoidSound</h1>
+    <p>Descubre tu música favorita</p>
+
+    <nav>
+        {% if request.session.usuario_id %}
+            <a href="{% url 'profile' %}">Ver mi Perfil</a> |
+            <a href="{% url 'lista_playlists' %}">Mis Playlists</a>
+        {% else %}
+            <a href="{% url 'login_usuario' %}">Iniciar Sesión</a> |
+            <a href="{% url 'registrar_usuario' %}">Registrarse</a>
+        {% endif %}
+    </nav>
+
+    <h2>Todas las Canciones disponible</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th># ID</th>
+                <th>Canción</th>
+                <th>Artista</th>
+                <th>Álbum</th>
+                <th>Duración (seg)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cancion in canciones %}
+                <tr>
+                    <td>{{ cancion.id_cancion }}</td>
+                    <td><strong>{{ cancion.nombreCancion }}</strong></td>
+                    <td>{{ cancion.album.artista.nombreArtista }}</td>
+                    <td><em>{{ cancion.album.nombreAlbum }}</em></td>
+                    <td>{{ cancion.duracion }}s</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No hay canciones activas disponibles en el catálogo en este momento.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
