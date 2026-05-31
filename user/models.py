@@ -38,7 +38,7 @@ class Playlist(models.Model):
 
 
 class CancionPlaylist(models.Model):
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, db_column='Playlist_id_playlist')
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, db_column='Playlist_id_playlist', primary_key=True)
     cancion = models.ForeignKey(Cancion, on_delete=models.CASCADE, db_column='Cancion_id_cancion')
 
     class Meta:

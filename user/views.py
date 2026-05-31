@@ -1,14 +1,19 @@
+from django.contrib import messages
+from django.db import connection
 from django.db.models import Max
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import FormMixin
 
-from .models import Playlist, Usuario, Likes
-from .forms import RegistroUsuarioForm, PlaylistForm, LoginForm, EditUserForm
-from django.views.generic import CreateView, FormView, TemplateView, UpdateView, DeleteView
+from voidsound.models import Cancion
+from .models import Playlist, Usuario, Likes, CancionPlaylist
+from .forms import RegistroUsuarioForm, PlaylistForm, LoginForm, EditUserForm, AddSongForm
+from django.views.generic import CreateView, FormView, TemplateView, UpdateView, DeleteView, DetailView
 from django.views import View
 
 
-#Cambiar por vistas basadas en clases, pasando formularios y templates para hacer más fácil
+#region Usuario y Perfil
 
 class RegistroUserView(CreateView):
     form_class = RegistroUsuarioForm
@@ -89,6 +94,9 @@ class DeleteUserView(DeleteView):
 
         return redirect(success_url)
 
+#endregion
+
+#region Playlists
 class ListaPlaylistsView(View):
     template_name = 'user/playlists.html'
 
@@ -125,3 +133,65 @@ class ListaPlaylistsView(View):
         # Si el formulario no es válido, volvemos a renderizar con los errores
         playlists = Playlist.objects.filter(usuario=usuario_actual)
         return render(request, self.template_name, {'playlists': playlists, 'form': form, 'usuario': usuario_actual})
+
+
+class ShowPlaylistdetailView(FormMixin, DetailView):
+    model = Playlist
+    template_name = 'user/playlist_detail.html'
+    form_class = AddSongForm
+    context_object_name = 'playlist'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'usuario_id' not in request.session:
+            return redirect('login_usuario')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+
+        context['canciones'] = CancionPlaylist.objects.filter(playlist = self.object).select_related('cancion')
+        context['form'] = self.get_form()
+        return context
+
+    def post(self, *args, **kwargs):
+
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+
+    def form_valid(self, form):
+        cancion_id = form.cleaned_data['cancion'].id_cancion
+
+        playlist_id = self.object.id_playlist
+        #sentencia directa por culpa de problemas del orm
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT COUNT(*) FROM [Usuarios].[CancionPlaylist] WHERE Playlist_id_playlist = %s AND Cancion_id_cancion = %s",
+                [playlist_id, cancion_id]
+            )
+            ya_existe = cursor.fetchone()[0] > 0
+
+        if ya_existe:
+            messages.error(self.request, "Esta canción ya se encuentra en la playlist.")
+            return HttpResponseRedirect(self.get_success_url())
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO [Usuarios].[CancionPlaylist] (Playlist_id_playlist, Cancion_id_cancion) VALUES (%s, %s)",
+                [playlist_id, cancion_id]
+            )
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('detalle_playlist', kwargs={'pk': self.object.pk})
+
+
+
+
+#endregion

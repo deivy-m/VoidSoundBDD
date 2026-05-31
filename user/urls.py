@@ -9,4 +9,5 @@ urlpatterns = [
     path('profile/', views.UserProfileView.as_view(), name='profile'),
     path('editprofile/', views.EditUserView.as_view(), name='edit_profile'),
     path('deleteprofile/', views.DeleteUserView.as_view(), name='delete_profile'),
+    path('playlist/<int:pk>/', views.ShowPlaylistdetailView.as_view(), name='detalle_playlist'),
 ]

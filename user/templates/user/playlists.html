@@ -8,7 +8,9 @@
     <h2>Mis Playlists</h2>
     <ul>
         {% for playlist in playlists %}
-            <li><strong>{{ playlist.nombrePlaylist }}</strong> (Creado por: {{ playlist.usuario.nombre }})</li>
+            <a href="{% url 'detalle_playlist' playlist.id_playlist%}">
+                <li><strong>{{ playlist.nombrePlaylist }}</strong> (Creado por: {{ playlist.usuario.nombre }})</li>
+            </a>
         {% empty %}
             <li>No hay playlists creadas aún.</li>
         {% endfor %}
