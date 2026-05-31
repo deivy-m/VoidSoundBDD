@@ -18,10 +18,10 @@ urlpatterns = [
 
     # Canciones
     path('canciones/', views.CancionListView.as_view(), name='cancion_list'),
-    path('canciones/<int:pk>/', views.CancionDetailView.as_view(), name='cancion_detail'),
     path('canciones/nuevo/', views.CancionCreateView.as_view(), name='cancion_create'),
-    path('canciones/<int:pk>/editar/', views.CancionUpdateView.as_view(), name='cancion_update'),
-    path('canciones/<int:pk>/eliminar/', views.CancionDeleteView.as_view(), name='cancion_delete'),
+    path('canciones/<str:pk>/', views.CancionDetailView.as_view(), name='cancion_detail'),
+    path('canciones/<str:pk>/editar/', views.CancionUpdateView.as_view(), name='cancion_update'),
+    path('canciones/<str:pk>/eliminar/', views.CancionDeleteView.as_view(), name='cancion_delete'),
 
 # Géneros
     path('generos/', views.GeneroListView.as_view(), name='genero_list'),

@@ -19,11 +19,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for album in albums %}
+        {% for album in albumes %}
         <tr>
             <td>#{{ album.id_album }}</td>
             <td><strong>{{ album.tituloAlbum }}</strong></td>
-            <td style="color: var(--text-gray);">{{ album.anioLanzamiento }}</td>
+            <td style="color: var(--text-gray);">{{ album.nombreAlbum }}</td>
             <td style="color: var(--spotify-celeste);">{{ album.artista.nombreArtista }}</td>
             <td class="action-links">
                 <a href="{% url 'album_detail' album.pk %}" class="view">Ver</a>

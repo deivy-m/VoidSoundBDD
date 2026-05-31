@@ -27,7 +27,7 @@ class CancionForm(forms.ModelForm):
         model = Cancion
         fields = ['id_cancion', 'nombreCancion', 'duracion', 'estado', 'album', 'genero']
         widgets = {
-            'id_cancion': forms.NumberInput(attrs={'class': 'form-control'}),
+            'id_cancion': forms.TextInput(attrs={'class': 'form-control'}),
             'nombreCancion': forms.TextInput(attrs={'class': 'form-control'}),
             'duracion': forms.NumberInput(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-control'}),

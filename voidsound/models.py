@@ -43,7 +43,7 @@ class Cancion(models.Model):
         ('activa', 'Activa'),
         ('inactiva', 'Inactiva'),
     ]
-    id_cancion = models.IntegerField(primary_key=True)
+    id_cancion = models.CharField(primary_key=True, max_length=50)
     nombreCancion = models.CharField(max_length=100)
     duracion = models.IntegerField()
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='activa')

@@ -41,7 +41,7 @@ class LoginView(FormView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        # Captura la petición de salida mandada desde el menú
+
         if request.POST.get('logout') == 'true':
             request.session.flush()
             return redirect('login_usuario')

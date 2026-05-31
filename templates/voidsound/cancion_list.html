@@ -22,15 +22,15 @@
     </thead>
     <tbody>
         {% for cancion in canciones %}
-        <tr class="track-row" data-title="{{ cancion.tituloCancion }}" data-artist="{{ cancion.album.artista.nombreArtista|default:'' }}">
+        <tr class="track-row" data-title="{{ cancion.nombreCancion }}" data-artist="{{ cancion.album.artista.nombreArtista|default:'' }}">
             <td>#{{ cancion.id_cancion }}</td>
-            <td><strong>{{ cancion.tituloCancion }}</strong></td>
+            <td><strong>{{ cancion.nombreCancion }}</strong></td>
 
             <td style="width: 280px; padding: 8px 20px;">
                 <div class="embed-container" style="border-radius: 8px; overflow: hidden; height: 80px; width: 250px; background-color: #121212;">
                     <iframe
                         class="spotify-preview-frame"
-                        src=""
+                        src="https://open.spotify.com/embed/track/{{ cancion.id_cancion }}?utm_source=generator&theme=0"
                         width="100%"
                         height="80"
                         frameBorder="0"
