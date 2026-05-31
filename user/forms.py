@@ -1,10 +1,10 @@
 from django import forms
-from .models import Usuario, Playlist
+
+from voidsound.models import Cancion
+from .models import Usuario, Playlist, CancionPlaylist
 
 
-#el id de usuario no debería ingresarse, ni su tipo de usuario, por defecto es free
-#solo nombre, email y password
-#personalizar los campos más para pasar a los templates
+#region Usuario y Perfil
 class RegistroUsuarioForm(forms.ModelForm):
     contraseña = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
@@ -34,16 +34,6 @@ class LoginForm(forms.Form):
         return cleaned_data
 
 
-
-class PlaylistForm(forms.ModelForm):
-
-    nombrePlaylist = forms.CharField(help_text=False, label=False, widget=forms.TextInput(
-        attrs={'placeholder': 'Nombre de la playlist'}))
-
-    class Meta:
-        model = Playlist
-        fields = ['nombrePlaylist', ]
-
 class EditUserForm(forms.ModelForm):
 
     nombre = forms.CharField(help_text=False, label=False, widget=forms.TextInput(attrs={
@@ -56,3 +46,28 @@ class EditUserForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ['nombre', 'email']
+#endregion
+
+
+#region Playlists y Canciones
+class PlaylistForm(forms.ModelForm):
+
+    nombrePlaylist = forms.CharField(help_text=False, label=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Nombre de la playlist'}))
+
+    class Meta:
+        model = Playlist
+        fields = ['nombrePlaylist', ]
+
+class AddSongForm(forms.ModelForm):
+    cancion = forms.ModelChoiceField(
+        queryset=Cancion.objects.filter(estado='activa'),
+        empty_label="-- Elige una canción --",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = CancionPlaylist
+        fields = ['cancion']
+#endregion
+

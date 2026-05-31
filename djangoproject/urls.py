@@ -18,10 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from voidsound.views import IndexView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Conectamos las urls locales de voidsound a la raíz del proyecto
+
+ 
+
     path('', include('voidsound.urls')),
-    # Conectamos las urls locales de la app de usuarios sin namespaces conflictivos
+
     path('user/', include('user.urls')),
 ]
