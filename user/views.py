@@ -27,13 +27,13 @@ class RegistroUserView(CreateView):
         user.save()
 
         self.request.session['usuario_id'] = user.id_usuario
-        return redirect('lista_playlists')
+        return redirect('index')
 
 
 class LoginView(FormView):
     template_name = 'user/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('lista_playlists')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         usuario = form.user

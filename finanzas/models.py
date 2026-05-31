@@ -1,6 +1,9 @@
 from user.models import Usuario
 from django.db import models
 
+from user.models import Usuario
+
+
 class Suscripcion(models.Model):
     TIPO_SUS_CHOICES = [('duo', 'Duo'), ('familiar', 'Familiar'), ('free', 'Free'), ('premium', 'Premium')]
     ESTADO_SUS_CHOICES = [('activa', 'Activa'), ('inactiva', 'Inactiva')]
