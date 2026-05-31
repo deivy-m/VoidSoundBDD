@@ -146,13 +146,13 @@ class ShowPlaylistdetailView(FormMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         if 'usuario_id' not in request.session:
             return redirect('login_usuario')
-    return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
-        def get_context_data(self, **kwargs):
-          context = super().get_context_data(**kwargs)
-          context['canciones'] = CancionPlaylist.objects.filter(playlist = self.object).select_related('cancion')
-          context['form'] = self.get_form()
-          return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['canciones'] = CancionPlaylist.objects.filter(playlist = self.object).select_related('cancion')
+        context['form'] = self.get_form()
+        return context
 
     def post(self, *args, **kwargs):
 
