@@ -16,7 +16,7 @@ class Suscripcion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column='Usuario_id_usuario')
 
     class Meta:
-        db_table = 'Suscripción'  # <-- Mismo nombre (con tilde) que tu CREATE TABLE del SQL
+        db_table = '[Usuarios].[Suscripción]'
 
     def __str__(self):
         return f"Suscripción {self.tipo} - {self.usuario.nombre}"
@@ -32,7 +32,7 @@ class Pago(models.Model):
     suscripcion = models.ForeignKey(Suscripcion, on_delete=models.PROTECT, db_column='Suscripción_id_suscripcion', null=True, blank=True)
 
     class Meta:
-        db_table = 'Pago'  # <-- Fuerza a buscar el nombre exacto del SQL
+        db_table = '[Finanzas].[Pago]'
 
     def __str__(self):
         return f"Pago {self.id_pago} - {self.estado}"
