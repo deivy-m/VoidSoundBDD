@@ -9,3 +9,7 @@ user/migrations/
 .venv/
 env/
 venv/
+# Configuraciones de editores de código (PyCharm / VS Code)
+.idea/
+.vscode/
+*.iml
