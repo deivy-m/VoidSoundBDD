@@ -8,33 +8,40 @@ from .forms import RegistroUsuarioForm, PlaylistForm, LoginForm, EditUserForm
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView, DeleteView
 from django.views import View
 
+from voidsound.models import Cancion
 
-#Cambiar por vistas basadas en clases, pasando formularios y templates para hacer más fácil
 
 class RegistroUserView(CreateView):
     form_class = RegistroUsuarioForm
     template_name = 'user/registro.html'
 
     def form_valid(self, form):
-
-        user = form.save(commit=False) #aun no guardar hasta conseguir nuevo id
+        user = form.save(commit=False)
         max_id = Usuario.objects.aggregate(Max('id_usuario'))['id_usuario__max']
-        user.id_usuario = (max_id + 1) if max_id is not 0 else 1
+        user.id_usuario = (max_id + 1) if max_id is not None else 1
         user.save()
 
         self.request.session['usuario_id'] = user.id_usuario
         return redirect('lista_playlists')
 
+
 class LoginView(FormView):
     template_name = 'user/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('lista_playlists') #Redirección
+    success_url = reverse_lazy('lista_playlists')
 
     def form_valid(self, form):
         usuario = form.user
         self.request.session['usuario_id'] = usuario.id_usuario
-
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        # Captura la petición de salida mandada desde el menú
+        if request.POST.get('logout') == 'true':
+            request.session.flush()
+            return redirect('login_usuario')
+        return super().post(request, *args, **kwargs)
+
 
 class UserProfileView(TemplateView):
     template_name = 'user/profile.html'
@@ -44,15 +51,13 @@ class UserProfileView(TemplateView):
             return redirect('login_usuario')
         return super().dispatch(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #User actual
         usuario = Usuario.objects.get(id_usuario=self.request.session['usuario_id'])
         context['usuario'] = usuario
         context['playlists'] = Playlist.objects.filter(usuario=usuario)
-
         return context
+
 
 class EditUserView(UpdateView):
     model = Usuario
@@ -66,13 +71,14 @@ class EditUserView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
-
         return Usuario.objects.get(id_usuario=self.request.session['usuario_id'])
+
 
 class DeleteUserView(DeleteView):
     model = Usuario
     template_name = 'user/delete.html'
     success_url = reverse_lazy('registrar_usuario')
+
     def dispatch(self, request, *args, **kwargs):
         if 'usuario_id' not in request.session:
             return redirect('login_usuario')
@@ -82,24 +88,18 @@ class DeleteUserView(DeleteView):
         return Usuario.objects.get(id_usuario=self.request.session['usuario_id'])
 
     def form_valid(self, form):
-
         success_url = self.get_success_url()
         self.object.delete()
-
         self.request.session.flush()
-
         return redirect(success_url)
-
-
 
 
 class ListaPlaylistsView(View):
     template_name = 'user/playlists.html'
 
     def dispatch(self, request, *args, **kwargs):
-
         if 'usuario_id' not in request.session:
-            return redirect('registrar_usuario')
+            return redirect('login_usuario')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -120,12 +120,30 @@ class ListaPlaylistsView(View):
 
         if form.is_valid():
             playlist = form.save(commit=False)
-            playlist.usuario = usuario_actual  # Asignamos el usuario de la sesión
+            playlist.usuario = usuario_actual
             max_id = Playlist.objects.aggregate(Max('id_playlist'))['id_playlist__max']
-            playlist.id_playlist = (max_id + 1) if max_id is not 0 else 1
+            playlist.id_playlist = (max_id + 1) if max_id is not None else 1
             playlist.save()
             return redirect('lista_playlists')
 
-        # Si el formulario no es válido, volvemos a renderizar con los errores
         playlists = Playlist.objects.filter(usuario=usuario_actual)
         return render(request, self.template_name, {'playlists': playlists, 'form': form, 'usuario': usuario_actual})
+
+
+class IndexView(View):
+    template_name = 'user/index.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'usuario_id' not in request.session:
+            return redirect('login_usuario')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        usuario_actual = Usuario.objects.get(id_usuario=request.session['usuario_id'])
+        canciones = Cancion.objects.all()
+
+        context = {
+            'canciones': canciones,
+            'usuario': usuario_actual
+        }
+        return render(request, self.template_name, context)

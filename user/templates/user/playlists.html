@@ -1,26 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
-<!--Cambiar eventualmente los estilos en htmls-->
-<head>
-    <title>Playlists - VoidSound</title>
-</head>
-<body>
-    <h2>Mis Playlists</h2>
-    <ul>
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound - Mis Playlists{% endblock title %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 10px;">Playlists de la Comunidad</h1>
+        <p style="color: #b3b3b3; font-size: 0.95rem;">Explora tus listas de reproducción o crea una nueva.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; margin-bottom: 50px;">
         {% for playlist in playlists %}
-            <li><strong>{{ playlist.nombrePlaylist }}</strong> (Creado por: {{ playlist.usuario.nombre }})</li>
+            <div class="playlist-card" style="background-color: #181818; padding: 16px; border-radius: 8px; transition: background-color 0.3s ease; cursor: pointer;">
+                <div style="background: #282828; width: 100%; aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.5);">
+                    <span style="font-size: 4rem; color: #b3b3b3;">🎵</span>
+                </div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    {{ playlist.nombre }}
+                </h3>
+                <p style="font-size: 0.8rem; color: #b3b3b3;">Por: <span style="color: #1db954;">{{ playlist.usuario.nombre }}</span></p>
+            </div>
         {% empty %}
-            <li>No hay playlists creadas aún.</li>
+            <div style="grid-column: 1 / -1; background: #121212; padding: 30px; border-radius: 8px; text-align: center; color: #b3b3b3;">
+                <p>No tienes ninguna playlist creada todavía. ¡Crea la primera abajo!</p>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 
-    <hr>
+    <hr style="border: 0; border-top: 1px solid #282828; margin-bottom: 40px;">
 
-    <h3>Crear Nueva Playlist</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar Playlist</button>
-    </form>
-</body>
-</html>
+    <div style="background-color: #121212; padding: 30px; border-radius: 8px; max-width: 500px;">
+        <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 20px;">Crear Nueva Playlist</h2>
+
+        <form method="post" action="{% url 'lista_playlists' %}">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                {{ form.nombre.errors }}
+                <input type="text" name="nombre" id="id_nombre" placeholder="Nombre de la playlist" required
+                       style="width: 100%; padding: 14px; background-color: #2a2a2a; border: 1px solid transparent; border-radius: 4px; color: #fff; font-size: 0.95rem; box-sizing: border-box; transition: background-color 0.2s;">
+            </div>
+
+            <button type="submit" style="background-color: #1db954; color: #fff; border: none; padding: 14px 32px; font-size: 0.95rem; font-weight: 700; border-radius: 30px; cursor: pointer; transition: transform 0.2s, background-color 0.2s;">
+                Guardar Playlist
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<style>
+    .playlist-card:hover { background-color: #282828 !important; }
+    input:focus { background-color: #333 !important; border-color: #535353 !important; outline: none; }
+    button:hover { background-color: #1ed760; transform: scale(1.04); }
+</style>
+{% endblock content %}

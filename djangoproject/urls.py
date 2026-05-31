@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Conectamos las urls locales de voidsound a la raíz del proyecto
     path('', include('voidsound.urls')),
+    # Conectamos las urls locales de la app de usuarios sin namespaces conflictivos
     path('user/', include('user.urls')),
 ]
