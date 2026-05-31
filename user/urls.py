@@ -16,4 +16,5 @@ urlpatterns = [
 
     # Gestión de Playlists
     path('playlists/', views.ListaPlaylistsView.as_view(), name='lista_playlists'),
+    path('playlist/delete/<int:pk>/', views.DeletePlaylistView.as_view(), name='delete_playlist'),
 ]

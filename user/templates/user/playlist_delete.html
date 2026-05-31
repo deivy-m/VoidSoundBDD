@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+{% block title %}VoidSound - Eliminar Playlist{% endblock title %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 60px auto; padding: 30px; background-color: #181818; border-radius: 8px; border: 1px solid #2a2a2a; text-align: center;">
+    
+    <h1 style="color: #ff5c5c; font-size: 1.8rem; margin-bottom: 15px; font-weight: 700;">¿Eliminar Playlist?</h1>
+    
+    <p style="color: var(--text-gray); font-size: 1rem; line-height: 1.5; margin-bottom: 25px;">
+        Estás a punto de borrar permanentemente la playlist 
+        <strong style="color: #fff;">"{{ playlist.nombrePlaylist }}"</strong>. 
+        Esta acción quitará todas las canciones contenidas en ella y no se puede deshacer.
+    </p>
+
+    <form method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+        {% csrf_token %}
+        
+        <button type="submit" class="btn-spotify-primary" 
+                style="background-color: #ff5c5c; color: #fff; width: 100%; padding: 12px; border-radius: 4px; font-weight: 600; cursor: pointer; border: none; transition: background-color 0.2s;">
+            Sí, eliminar permanentemente
+        </button>
+        
+        <a href="{% url 'detalle_playlist' playlist.pk %}" class="btn-spotify-secondary" 
+           style="text-align: center; padding: 12px; border-radius: 4px; border: 1px solid #2a2a2a; color: var(--text-gray); text-decoration: none; font-size: 0.95rem; transition: all 0.2s;">
+            Cancelar y volver
+        </a>
+    </form>
+
+</div>
+{% endblock content %}

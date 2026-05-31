@@ -21,7 +21,7 @@
                     </div>
 
                       <h3 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          {{ playlist.nombre }}
+                          {{ playlist.nombrePlaylist }}
                       </h3>
 
                     <p style="font-size: 0.8rem; color: #b3b3b3;">Por: <span style="color: #1db954;">{{ playlist.usuario.nombre }}</span></p>
@@ -45,7 +45,7 @@
 
             <div style="margin-bottom: 20px;">
                 {{ form.nombre.errors }}
-                <input type="text" name="nombre" id="id_nombre" placeholder="Nombre de la playlist" required
+                <input type="text" name="nombrePlaylist" id="id_nombre" placeholder="Nombre de la playlist" required
                        style="width: 100%; padding: 14px; background-color: #2a2a2a; border: 1px solid transparent; border-radius: 4px; color: #fff; font-size: 0.95rem; box-sizing: border-box; transition: background-color 0.2s;">
             </div>
 

@@ -164,9 +164,26 @@ class ShowPlaylistdetailView(FormMixin, DetailView):
         context['form'] = self.get_form()
         return context
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
         self.object = self.get_object()
+
+        action = request.POST.get('action')
+
+        if action == 'delete':
+            cancion_id = request.POST.get('cancion_id')
+            playlist_id = self.object.id_playlist
+
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM [Usuarios].[CancionPlaylist] WHERE Playlist_id_playlist = %s AND Cancion_id_cancion = %s",
+                    [playlist_id, cancion_id]
+                )
+
+            messages.success(request, "La canción ha sido eliminada de la playlist exitosamente.")
+            return HttpResponseRedirect(self.get_success_url())
+
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -200,6 +217,42 @@ class ShowPlaylistdetailView(FormMixin, DetailView):
 
     def get_success_url(self):
         return reverse('detalle_playlist', kwargs={'pk': self.object.pk})
+
+class DeletePlaylistView(DeleteView):
+    model = Playlist
+    template_name = 'user/playlist_delete.html'
+    success_url = reverse_lazy('lista_playlists')
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'usuario_id' not in request.session:
+            return redirect('login_usuario')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+
+        playlist = super().get_object(queryset)
+
+        if playlist.usuario.id_usuario != self.request.session['usuario_id']:
+            raise PermissionError("No tienes permiso para borrar esta playlist.")
+        return playlist
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        playlist_id = self.object.id_playlist
+        with connection.cursor() as cursor:
+
+            cursor.execute(
+                "DELETE FROM [Usuarios].[CancionPlaylist] WHERE Playlist_id_playlist = %s",
+                [playlist_id]
+            )
+
+
+            cursor.execute(
+                "DELETE FROM [Usuarios].[Playlist] WHERE id_playlist = %s",
+                [playlist_id]
+            )
+        messages.success(self.request, "La playlist ha sido eliminada correctamente.")
+        return redirect(success_url)
 
 
 

@@ -8,8 +8,23 @@
         <h1 style="color: var(--spotify-celeste);">Playlist: {{ playlist.nombrePlaylist }}</h1>
         <p style="color: var(--text-gray); margin-top: 5px; font-size: 0.9rem;">Creada por el usuario ID: {{ playlist.usuario_id }}</p>
     </div>
+    <a href="{% url 'delete_playlist' playlist.pk %}" class="btn-spotify-secondary"
+           style="background-color: transparent; color: #ff5c5c; border: 1px solid #ff5c5c; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.2s;">
+           Eliminar Playlist
+    </a>
     <a href="{% url 'lista_playlists' %}" class="btn-spotify-secondary">Volver a mis playlists</a>
 </div>
+
+{% if messages %}
+    <div style="margin-bottom: 20px;">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                 style="padding: 12px; border-radius: 4px; background-color: #2a2a2a; color: #fff; margin-bottom: 10px; border-left: 4px solid {% if message.tags == 'error' %}#ff5c5c{% else %}#1db954{% endif %};">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start;">
     
@@ -20,13 +35,42 @@
                 <tr>
                     <th>ID Pista</th>
                     <th>Nombre de la Canción</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
                 {% for elemento in canciones %}
                 <tr>
                     <td style="color: var(--text-gray);">#{{ elemento.cancion.id_cancion }}</td>
-                    <td><strong>{{ elemento.cancion.nombreCancion }}</strong></td>
+                    <td>
+                        <div class="playlist-card">
+                            <div style="border-radius: 8px; margin-bottom: 14px; height: 80px; background-color: #121212;">
+                                <iframe
+                                    src="https://open.spotify.com/embed/track/{{ elemento.cancion.id_cancion }}?utm_source=generator&theme=0"
+                                    width="100%"
+                                    height="80"
+                                    frameBorder="0"
+                                    allowfullscreen=""
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                    loading="lazy"
+                                    style="border: none; width: 100%; height: 100px;">
+                                </iframe>
+                            </div>
+                            <h4 style="margin: 5px 0 0 0; font-size: 0.95rem;">{{ elemento.cancion.nombreCancion }}</h4>
+                        </div>
+                    </td>
+                    <td style="padding: 12px 8px; vertical-align: middle;">
+                        <form method="POST" style="margin: 0;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="cancion_id" value="{{ elemento.cancion.id_cancion }}">
+                            <button type="submit" class="btn-spotify-secondary"
+                                    style="background-color: #282828; color: #ff5c5c; border: 1px solid #ff5c5c; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;"
+                                    onclick="return confirm('¿Estás seguro de que deseas quitar esta canción de la playlist?');">
+                                Quitar
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
