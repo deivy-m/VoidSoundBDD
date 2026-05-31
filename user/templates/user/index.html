@@ -1,47 +1,35 @@
 {% extends 'base/base.html' %}
-
 {% block title %}VoidSound - Inicio{% endblock title %}
-
 {% block content %}
-<div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
-
-    <!-- Mensaje de bienvenida -->
+<div class="section-content">
     <div style="margin-bottom: 40px;">
         <h1 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 10px;">¡Hola, {{ usuario_logueado.nombre|default:usuario.nombre }}!</h1>
         <p style="color: var(--text-gray); font-size: 1rem;">Descubre música nueva en VoidSound</p>
     </div>
-
-    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px; border-bottom: 1px solid #282828; padding-bottom: 10px;">Canciones Disponibles</h2>
-
-    <!-- Grid Centrado y Responsivo de Canciones -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px;">
-
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Canciones Disponibles</h2>
+    <div class="playlist-grid">
         {% for cancion in canciones %}
-            <div class="song-card" style="background-color: #121212; padding: 16px; border-radius: 8px; transition: background-color 0.3s ease; cursor: pointer;">
-                <div style="background: #282828; width: 100%; aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
-                    <span style="font-size: 3.5rem; color: #b3b3b3;">🎵</span>
+            <div class="playlist-card">
+                <div style="border-radius: 8px; overflow: hidden; margin-bottom: 14px; height: 80px; background-color: #121212;">
+                    <iframe
+                        src="https://open.spotify.com/embed/track/{% if cancion.nombreCancion == 'Moscow Mule' %}6Xom58OOXk2SoU711L2IXO{% elif cancion.nombreCancion == 'Tití Me Preguntó' %}1IHWl5LamUGEuP4ozKQSXZ{% elif cancion.nombreCancion == 'Levitating' %}39LLxExYz6ewLAcYrzQQyP{% elif cancion.nombreCancion == "Don't Start Now" %}6WrI0LAC5M1Rw2MnX2ZvEg{% elif cancion.nombreCancion == 'Master of Puppets' %}2MuWTIM3b0YEAskbeeFE1i{% elif cancion.nombreCancion == 'Battery' %}6UB9mShVLbMm0W4e6vud4C{% elif cancion.nombreCancion == 'De Música Ligera' %}4it4NYn9wNqGV54joA6oN0{% elif cancion.nombreCancion == 'Te Para Tres' %}5M4Kx9qHgdTQlKovj4hK9O{% elif cancion.nombreCancion == 'Provenza' %}3HqcNJdZ2seoGxhn0wVNDK{% elif cancion.nombreCancion == 'TQG' %}0DWdj2oZMBFSzRsi2Cvfzf{% else %}6Xom58OOXk2SoU711L2IXO{% endif %}?utm_source=generator&theme=0"
+                        width="100%"
+                        height="80"
+                        frameBorder="0"
+                        allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        style="border: none; width: 100%; height: 80px;">
+                    </iframe>
                 </div>
-
-                <!-- Ajusta estos campos según las propiedades reales de tu modelo Cancion -->
-                <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff;">
-                    {{ cancion.nombreCancion }}
-                </h3>
-                <p style="font-size: 0.85rem; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    {{ cancion.artista.nombre|default:"Artista" }}
-                </p>
+                <h4>{{ cancion.nombreCancion }}</h4>
+                <p>{{ cancion.album.artista.nombreArtista|default:"Artista Desconocido" }}</p>
             </div>
         {% empty %}
             <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-gray);">
                 <p style="font-size: 1.1rem;">Aún no se han agregado canciones al catálogo. 😔</p>
             </div>
         {% endfor %}
-
     </div>
 </div>
-
-<style>
-    .song-card:hover {
-        background-color: #1c1c1c !important;
-    }
-</style>
 {% endblock content %}

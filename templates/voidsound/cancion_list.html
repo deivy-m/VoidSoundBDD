@@ -13,6 +13,7 @@
         <tr>
             <th>ID</th>
             <th>Título de la Canción</th>
+            <th>Escuchar Preview</th>
             <th>Duración</th>
             <th>Álbum</th>
             <th>Género</th>
@@ -21,9 +22,29 @@
     </thead>
     <tbody>
         {% for cancion in canciones %}
-        <tr>
+        <tr class="track-row" data-title="{{ cancion.tituloCancion }}" data-artist="{{ cancion.album.artista.nombreArtista|default:'' }}">
             <td>#{{ cancion.id_cancion }}</td>
             <td><strong>{{ cancion.tituloCancion }}</strong></td>
+
+            <td style="width: 280px; padding: 8px 20px;">
+                <div class="embed-container" style="border-radius: 8px; overflow: hidden; height: 80px; width: 250px; background-color: #121212;">
+                    <iframe
+                        class="spotify-preview-frame"
+                        src=""
+                        width="100%"
+                        height="80"
+                        frameBorder="0"
+                        allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        style="display: none;">
+                    </iframe>
+                    <div class="loading-placeholder" style="color: var(--text-gray); font-size: 0.8rem; padding: 30px 10px; text-align: center;">
+                        🔍 Buscando pista...
+                    </div>
+                </div>
+            </td>
+
             <td style="color: var(--text-gray);">{{ cancion.duracion }}</td>
             <td style="color: var(--text-gray);">{{ cancion.album.tituloAlbum }}</td>
             <td><span style="background-color: #282828; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; color: var(--spotify-celeste);">{{ cancion.genero.nombreGenero }}</span></td>
@@ -35,11 +56,42 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 40px 0;">
+            <td colspan="7" style="text-align: center; color: var(--text-gray); padding: 40px 0;">
                 No hay ninguna canción guardada en este momento.
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const rows = document.querySelectorAll('.track-row');
+
+    rows.forEach(row => {
+        const title = row.getAttribute('data-title');
+        const artist = row.getAttribute('data-artist');
+        const iframe = row.querySelector('.spotify-preview-frame');
+        const placeholder = row.querySelector('.loading-placeholder');
+
+        if (title) {
+            // Limpiamos los textos para la URL de búsqueda
+            const query = encodeURIComponent(`${title} ${artist}`.trim());
+
+            // Usamos el endpoint de búsqueda embebida de Spotify
+            const embedUrl = `https://open.spotify.com/embed/embed.html?src=https%3A%2F%2Fopen.spotify.com%2Fsearch%2F${query}&theme=0`;
+
+            iframe.src = embedUrl;
+
+            // Cuando el reproductor carga la interfaz, ocultamos el placeholder
+            iframe.onload = function() {
+                placeholder.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+        } else {
+            placeholder.textContent = "❌ No disponible";
+        }
+    });
+});
+</script>
 {% endblock content %}
