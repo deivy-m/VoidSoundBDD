@@ -104,13 +104,3 @@ class GeneroDeleteView(DeleteView):
     success_url = reverse_lazy('genero_list')
 
 
-# -- Index --
-
-class IndexView(ListView):
-    model = Cancion
-    template_name = 'voidsound/index.html'
-    context_object_name = 'canciones'
-
-    def get_queryset(self):
-
-        return Cancion.objects.filter(estado='activa').select_related('album__artista')
