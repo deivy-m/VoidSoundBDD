@@ -35,8 +35,6 @@ class CancionForm(forms.ModelForm):
             'genero': forms.Select(attrs={'class': 'form-control'}),
         }
 
-
-
 class GeneroForm(forms.ModelForm):
     class Meta:
         model = Genero
