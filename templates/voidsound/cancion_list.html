@@ -46,7 +46,7 @@
             </td>
 
             <td style="color: var(--text-gray);">{{ cancion.duracion }}</td>
-            <td style="color: var(--text-gray);">{{ cancion.album.tituloAlbum }}</td>
+            <td style="color: var(--text-gray);">{{ cancion.album.nombreAlbum }}</td>
             <td><span style="background-color: #282828; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; color: var(--spotify-celeste);">{{ cancion.genero.nombreGenero }}</span></td>
             <td class="action-links">
                 <a href="{% url 'cancion_detail' cancion.pk %}" class="view">Ver</a>

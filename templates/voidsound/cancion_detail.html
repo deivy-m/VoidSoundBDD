@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 
-{% block title %}VoidSound - {{ cancion.tituloCancion }}{% endblock title %}
+{% block title %}VoidSound - {{ cancion.nombreCancion }}{% endblock title %}
 
 {% block content %}
 <div class="page-header">
@@ -9,9 +9,9 @@
 </div>
 
 <div class="card-spotify" style="display: flex; flex-direction: column; gap: 15px;">
-    <h2 style="color: var(--spotify-celeste); font-size: 1.8rem;">{{ cancion.tituloCancion }}</h2>
+    <h2 style="color: var(--spotify-celeste); font-size: 1.8rem;">{{ cancion.nombreCancion }}</h2>
     <p style="font-size: 1.1rem;"><strong>Duración:</strong> <span style="color: var(--text-gray);">{{ cancion.duracion }}</span></p>
-    <p style="font-size: 1.1rem;"><strong>Álbum:</strong> <span style="color: var(--text-gray);">{{ cancion.album.tituloAlbum }}</span></p>
+    <p style="font-size: 1.1rem;"><strong>Álbum:</strong> <span style="color: var(--text-gray);">{{ cancion.album.nombreAlbum }}</span></p>
     <p style="font-size: 1.1rem;"><strong>Género Musical:</strong> <span style="color: var(--spotify-celeste);">{{ cancion.genero.nombreGenero }}</span></p>
     
     <div style="margin-top: 15px; display: flex; gap: 15px;">
